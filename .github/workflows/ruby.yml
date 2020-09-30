@@ -46,13 +46,11 @@ jobs:
       if: github.event_name == 'push' || github.event_name == 'pull_request'
       run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
       
-    - name : Set up Token
-      env: # Or as an environment variable
-        SCANTISTTOKEN: ${{ secrets.SCANTISTTOKEN }}
-
     - name: Download Scantist-Bom-Detect
       run: curl -s https://scripts.scantist.com/staging/scantist-bom-detect.jar --output scantist-bom-detect.jar
       
     - name: Upload to Scantist when there is a push or request
+      env: # Setting the Token
+        SCANTISTTOKEN: ${{ secrets.SCANTISTTOKEN }}
       if: github.event_name == 'push' || github.event_name == 'pull_request'
       run: java -jar scantist-bom-detect.jar
